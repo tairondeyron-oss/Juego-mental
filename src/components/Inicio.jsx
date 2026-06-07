@@ -1,0 +1,12 @@
+import React from "react";
+
+export default function Inicio() {
+    return(
+        <div className="bg-fondo">
+            <div className="h-screen flex flex-col items-center justify-center gap-65 text-white text-3xl font-joti"> 
+                <h1 className="-mt-40 mx-15 text-center">Ejercita tu mente con Vix</h1>
+                <button className="bg-boton1 py-5 px-22 rounded-3xl shadow-[0_0_12px_rgba(0,0,0,0.15)] hover:shadow-[0_0_20px_#38c623] transition-shadow duration-200 ">Incio</button>
+            </div>
+        </div>
+    )
+}

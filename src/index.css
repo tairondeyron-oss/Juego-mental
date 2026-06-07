@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+    --color-fondo:#292465;
+    --color-boton1:#38c623;
+    --color-boton2: #c11924;
+}
+
+@theme {
+    --font-joti:"Joti One", serif;
+}
