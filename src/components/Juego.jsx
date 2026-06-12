@@ -5,12 +5,67 @@ import { LISTA_PREGUNTAS } from "../data/preguntas";
 
 export default function Juego() {
 
+    // Iniciar estados funcionalidad de preguntas del juego
+
     // Inicialización de estado preguntas desde 0 del array externo
     const [indicePregunta, setIndecePregunta] = useState(0);
+    const [opcionSeleccionada, setOpcionSeleccionada] = useState(null);
+    const [validarRespuesta, setValidarRespuesta] = useState(false);
+    const [confirmarRespuesta, setConfirmarRespuesta] = useState(false);
+    const [juegoTerminado, setJuegoTerminado] = useState(false)
+
 
     // Apuntar dinámicamente al objeto actual del array
     const preguntaActual = LISTA_PREGUNTAS[indicePregunta]
 
+    // Guardar respuesta seleccionada
+    const seleccionarOpcion = (opcion) => {
+        if(validarRespuesta) return;
+        setOpcionRespuesta(opcion);
+    }
+
+    // Validar si la opcion es correcta
+    const validarPregunta = () => {
+        if(!opcionSeleccionada) return alert('Seleccione una respuesta primero');
+
+        const confirmacion = opcionSeleccionada === preguntaActual.respuestaCorrecta;
+        setValidarRespuesta(validacion);
+        setConfirmarRespuesta(true);
+    }
+
+    // Continuar si la opcion es correcta
+
+    const validacionCorrecta = () =>{
+        // Reiniciar estados
+        setOpcionSeleccionada(null);
+        setValidarRespuesta(false);
+
+        // Aparecer nueva pregunta
+        if(preguntaActual + 1 < LISTA_PREGUNTAS.length){
+            preguntaActual(preguntaActual + 1);
+        } else {
+            setJuegoTerminado(true);
+        }
+    }
+
+    // Terminar juego si todas las respuestas son respondidas
+
+    if(juegoTerminado){
+        return(
+            <div>
+                <h1>Juego terminado</h1>
+                <p>Felcitaciones has completa exitosamente cada ejercicio matemático</p>
+            </div>
+        )
+    }
+
+    // Navegar a inicio Boton volver
+
+    const navigate = useNavigate();
+
+    const navegarInicio = () => {
+        navigate('/')
+    }
 
     return (
         <div className="min-h-screen w-full  bg-fondo ">
