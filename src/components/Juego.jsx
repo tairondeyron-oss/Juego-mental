@@ -19,7 +19,7 @@ export default function Juego() {
     const preguntaActual = LISTA_PREGUNTAS[indicePregunta]
 
     // Guardar respuesta seleccionada
-    const seleccionarOpcion = (opcion) => {
+    const escribirRespuesta = (opcion) => {
         if(validarRespuesta) return;
         setOpcionRespuesta(opcion);
     }
@@ -71,17 +71,39 @@ export default function Juego() {
         <div className="min-h-screen w-full  bg-fondo ">
 
             <div className="flex flex-col mx-4 py-10  gap-4 items-center  text-white  ">
-                <h1 className="text-xl font-kite break-word whitespace-normal overflow-hidden text-center ">Si lor un coco vale 45$ y una  mandarina vale 17$</h1>
+                <h1 className="text-xl font-kite break-word whitespace-normal overflow-hidden text-center "
+                >{preguntaActual.enunciado}</h1>
 
                 <div className=" mt-66 border-b -pb-2  ">
                     <input 
+                    onClick={escribirRespuesta}
                     className=" text-center focus:outline-none "
                     type="text" placeholder="Ingrese su respuesta" />
                 </div>
 
-                <div className="flex flex-row-reverse  gap-14 ">
-                    <button className="border-2  py-2 px-8 rounded-xl mt-10 bg-green-500 hover:bg-green-600 border-none " >Confirmar</button>
-                    <button className="border-2  py-2 px-8 rounded-xl mt-10   bg-red-500 hover:bg-red-600 border-none  " >Regresar</button>
+
+                {!validarPregunta ? (
+                    <button 
+                    onClick={validacionCorrecta}
+                    className="border-2  py-2 px-8 rounded-xl mt-10 bg-green-500 hover:bg-green-600 border-none " >
+                    Confirmar
+                    </button>
+
+                ) : (
+                    <button
+                    
+                    onClick={confirmarRespuesta ? validacionCorrecta : () => setValidarRespuesta(false)} 
+                    >
+                    {confirmarRespuesta ? "Siguiente Pregunta" : "Reintentar"}
+                    </button>
+                )
+                
+                }
+                <div className="flex  gap-14 ">
+                    
+                    <button
+                    onClick={navegarInicio}
+                    className="border-2  py-2 px-8 rounded-xl mt-10   bg-red-500 hover:bg-red-600 border-none  " >Regresar</button>
                 </div>
             </div>
         </div>
