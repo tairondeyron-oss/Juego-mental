@@ -6,13 +6,12 @@ export default function Juego() {
 
     // Iniciar estados funcionalidad de preguntas del juego
 
-    // Inicialización de estado preguntas desde 0 del array externo
-    const [indicePregunta, setIndecePregunta] = useState(0);
+    const [indicePregunta, setIndecePregunta] = useState(0); // enunciado 0
     const [respuestaPregunta, setRespuestaPregunta] = useState(null);
     const [validarRespuesta, setValidarRespuesta] = useState(false);
     const [confirmarRespuesta, setConfirmarRespuesta] = useState(false);
-    const [juegoTerminado, setJuegoTerminado] = useState(false)
-
+    const [juegoTerminado, setJuegoTerminado] = useState(false);
+    const [modalActivo, setModalActivo] = useState(false);
 
     // Apuntar dinámicamente al objeto actual del array
     const preguntaActual = LISTA_PREGUNTAS[indicePregunta];
@@ -24,7 +23,7 @@ export default function Juego() {
 
     // Validar si la opcion es correcta
     const validarPregunta = () => {
-        if(!respuestaPregunta) return alert('Seleccione una respuesta primero');
+        if(!respuestaPregunta) return alert('Escriba una respuesta primero');
 
         const confirmacion = respuestaPregunta === preguntaActual.respuestaCorrecta;
         setValidarRespuesta(confirmacion);
@@ -32,44 +31,32 @@ export default function Juego() {
     };
 
         // Manejar intento
-
     const manejarIntento = () => {
-        setConfirmarRespuesta(false)
+        setConfirmarRespuesta(false);
+        setValidarRespuesta(false);
+        setRespuestaPregunta("");
     }
 
     // Continuar si la opcion es correcta
-
     const validacionCorrecta = () =>{
         // Reiniciar estados
         setRespuestaPregunta(null);
         setValidarRespuesta(false);
         setConfirmarRespuesta(false);
 
-
         // Aparecer nueva pregunta
         if(indicePregunta + 1 < LISTA_PREGUNTAS.length){
             setIndecePregunta(indicePregunta + 1)
         } else {
-            setJuegoTerminado(true);
+            setModalActivo('exito');
         }
     };
 
-    // input tiene respuesta, confirmar, va y valida si lo del
-    //  input esta bien con el array en opcione correcta
-
-    // Terminar juego si todas las respuestas son respondidas
-
-    if(juegoTerminado){
-        return(
-            <div>
-                <h1>Juego terminado</h1>
-                <p>Felcitaciones has completa exitosamente cada ejercicio matemático</p>
-            </div>
-        )
-    };
+    const info = () => {
+        setModalActivo(true);
+    }
 
     // Navegar a inicio Boton volver
-
     const navigate = useNavigate();
 
     const navegarInicio = () => {
@@ -98,7 +85,8 @@ export default function Juego() {
                         <button 
                     onClick={validarPregunta}
                     className="border-2  py-2 px-8 rounded-xl mt-10 bg-green-500 hover:bg-green-600 border-none " 
-                    >Confirmar</button>
+                    >Confirmar
+                    </button>
                     )}
 
                     {confirmarRespuesta && (
@@ -115,13 +103,47 @@ export default function Juego() {
                         >Intentar nuevamente
                         </button>
                     )}
-
                     <button 
-                    onClick={navegarInicio}
-                    className="border-2  py-2 px-8 rounded-xl mt-10   bg-red-500 hover:bg-red-600 border-none  " 
-                    > Regresar
+                        onClick={navegarInicio}
+                        className="border-2  py-2 px-8 rounded-xl mt-10   bg-red-500 hover:bg-red-600 border-none  " 
+                        > Regresar
                     </button>
+
                 </div>
+                
+                <button
+                onClick={() => setModalActivo('info')}
+                className=  "mt-12 py-2 px-4 rounded-2xl bg-blue-400  transition-all"
+                >Ver información
+                </button>            
+
+                {modalActivo && (
+                    <div 
+                    onClick={() => setModalActivo(null)}
+                    className="fixed inset-0 bg-black/75 backdrop:blur-sm flex items-center justify-center z-50 ">
+                        <div 
+                        onClick={(e) => e.stopPropagation()}
+                        className="bg-slate-800 text-white p-6 rounded-2xl max-w-sm w-full mx-4 border border-slate-700 shadow-2xl flex flex-col items-center gap-2 text-center ">
+                            
+                            {modalActivo === 'exito' && (
+                                <>
+                                    <h2 className="text-xl">¡Felicidades ha completado el juego!</h2>
+                                    <button
+                                    onClick={navegarInicio}
+                                    className="py-2 px-6 mt-10 rounded-2xl outline:border-none bg-fuchsia-800 hover:bg-fuchsia-600"
+                                    >Volver a inicio
+                                    </button>
+                                </>
+                            )}
+                            {modalActivo === 'info' && (
+                                <>
+                                    <p>Este mini juego tiene como fin que practiques tu agilidad mental con una seria de ejercicios matemáticas simples</p>
+                                </>
+                            )}
+                        
+                        </div>
+                    </div>
+                )}
 
             </div>
         </div>
